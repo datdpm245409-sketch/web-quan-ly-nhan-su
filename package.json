@@ -1,0 +1,19 @@
+{
+  "name": "doan",
+  "version": "1.0.0",
+  "description": "Trang web quan li nhan su",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "author": "Pham Tan Dat Dang Vu Linh",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.5.0",
+    "nodemon": "^3.1.14"
+  }
+}

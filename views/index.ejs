@@ -1,0 +1,269 @@
+<!DOCTYPE html> 
+<html lang="vi"> 
+ 
+<head> 
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" /> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" /> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <title><%= title %> - it for life</title> 
+
+    <style>
+        /* Tùy chỉnh CSS để giao diện hiện đại hơn */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f9; /* Màu nền xám nhạt dịu mắt */
+            color: #333;
+        }
+        .navbar {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #0d6efd !important; /* Đổi màu logo */
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0d6efd !important;
+            transform: translateY(-1px);
+        }
+        .search-input {
+            background-color: #f1f3f5;
+            border: none;
+            padding-left: 1.5rem;
+        }
+        .search-input:focus {
+            background-color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+        .content-card {
+            border: none;
+            border-radius: 1rem; /* Bo góc lớn hơn */
+        }
+        .card-header-custom {
+            background-color: transparent;
+            border-bottom: 1px solid #f1f3f5;
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+    </style>
+</head> 
+ 
+<body> 
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top"> 
+        <div class="container"> 
+            <a class="navbar-brand" href="/"><i class="bi bi-star-fill text-warning"></i> it for life</a> 
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+    <li class="nav-item">
+        <a class="nav-link active" href="/nhan-su"><i class="bi bi-people-fill"></i> Danh sách nhân sự</a>
+    </li>
+
+    <% if(typeof session === "undefined" || !session.MaNguoiDung) { %>
+        <li class="nav-item">
+            <a class="nav-link" href="/dangky"><i class="bi bi-person-plus"></i> Đăng ký</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/dangnhap"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+        </li>
+    <% } else { %>
+        
+        <% if (session.QuyenHan == "admin") { %>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-gear"></i> Quản lý
+                </a>
+                <ul class="dropdown-menu border-0 shadow rounded-3">
+                    <li><a class="dropdown-item py-2" href="/nhan-su"><i class="bi bi-people me-2"></i> Danh sách tài khoản</a></li>
+                </ul>
+            </li>
+        <% } %>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle fs-5 align-middle me-1"></i> <%= session.HoVaTen %>
+            </a>
+            <ul class="dropdown-menu border-0 shadow rounded-3">
+                <li><a class="dropdown-item py-2" href="/hoso"><i class="bi bi-person-badge me-2"></i> Hồ sơ cá nhân</a></li>
+                <li><a class="dropdown-item py-2" href="/lich-su-cham-cong"><i class="bi bi-calendar-check me-2"></i> Lịch sử chấm công</a></li>
+            </ul>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link text-danger" href="/dangxuat"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+        </li>
+    <% } %>
+</ul>
+                
+                <form action="/timkiem" class="d-flex" role="search"> 
+                    <div class="input-group">
+                        <input class="form-control search-input rounded-start-pill" type="search" name="tukhoa" placeholder="Bạn muốn tìm gì?" aria-label="Search" /> 
+                        <button class="btn btn-primary rounded-end-pill px-3" type="submit"><i class="bi bi-search"></i></button> 
+                    </div>
+                </form> 
+            </div> 
+        </div> 
+    </nav> 
+     
+    <div class="container my-5"> 
+        <div class="card content-card shadow-sm"> 
+            <div class="card-header card-header-custom text-primary">
+                <%= title %>
+            </div> 
+            <div class="card-body p-4"> 
+               <% if (typeof session !== 'undefined' && session.success) { %>
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> <strong><%= session.success %></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% delete session.success; %>
+        <% } %>
+
+        <% if (typeof session !== 'undefined' && session.error) { %>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong><%= session.error %></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% delete session.error; %>
+        <% } %>
+
+<% if (typeof session.MaNguoiDung !== 'undefined') { %>
+<div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-5 text-center">
+                <h2 class="fw-bold mb-3">Chào buổi sáng, <%= session.HoVaTen %>!</h2>
+                <p class="text-muted">Hôm nay là <%= new Date().toLocaleDateString('vi-VN') %></p>
+
+                <div class="mt-4">
+                    <% if (session.QuyenHan !== 'admin') { %>
+                        <form action="/check-in" method="POST">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow">
+                                <i class="bi bi-geo-alt-fill me-2"></i> Điểm danh vào ca
+                            </button>
+                        </form>
+                    <% } else { %>
+                        <div class="alert alert-info d-inline-block border-0 shadow-sm rounded-pill px-4 py-3">
+                            <i class="bi bi-shield-lock-fill me-2"></i> Xin chào Quản trị viên. Chúc bạn một ngày làm việc hiệu quả!
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+     
+    <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+       <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-primary mb-0">
+                <i class="bi bi-bell-fill text-warning me-2"></i>Bảng thông báo nội bộ
+            </h4>
+            <% if (session.QuyenHan == "admin") { %>
+                <button class="btn btn-sm btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalThongBao">
+                    <i class="bi bi-plus-lg"></i> Tạo thông báo
+                </button>
+            <% } %>
+        </div>
+
+        <div class="modal fade" id="modalThongBao" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" action="/thong-bao/them" method="POST">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title fw-bold">Soạn thông báo mới</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4 text-start">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tiêu đề</label>
+                            <input type="text" name="TieuDe" class="form-control" placeholder="VD: Lịch nghỉ Tết..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nội dung chi tiết</label>
+                            <textarea name="NoiDung" class="form-control" rows="4" placeholder="Nhập nội dung..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary fw-bold">Đăng thông báo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="list-group list-group-flush border-top text-start">
+            <% if (typeof thongbaos !== 'undefined' && thongbaos.length > 0) { %>
+                <% thongbaos.forEach(function(tb) { %>
+                    <div class="list-group-item py-3 px-0 border-bottom position-relative">
+                        
+                        <% if (session.QuyenHan == "admin") { %>
+                            <a href="/thong-bao/xoa/<%= tb._id %>" class="btn btn-sm btn-danger position-absolute top-0 end-0 mt-3" onclick="return confirm('Bạn có chắc muốn xóa thông báo này?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        <% } %>
+
+                        <div class="d-flex w-100 justify-content-between align-items-center mb-2 pe-5">
+                            <h6 class="mb-0 fw-bold text-dark"><%= tb.TieuDe %></h6>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i><%= new Date(tb.NgayTao).toLocaleDateString('vi-VN') %></small>
+                        </div>
+                        <p class="mb-1 text-secondary pe-5" style="white-space: pre-wrap;"><%= tb.NoiDung %></p>
+                        <small class="text-primary fw-medium">Người đăng: <%= tb.NguoiDang %></small>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+                    Chưa có thông báo nào.
+                </div>
+            <% } %>
+        </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    </div>
+<% } else { %>
+    <div class="text-center py-5">
+        <h2>Chào mừng đến với Hệ thống Quản lý Nhân sự</h2>
+        <p>Vui lòng đăng nhập để thực hiện chấm công và sử dụng các tính năng.</p>
+    </div>
+<% } %> 
+                </div> 
+        </div> 
+         
+        <footer class="text-center text-muted mt-5 pt-4 pb-3">
+            <small>Bản quyền &copy; 2025 bởi <strong>DatPham</strong>. Mọi quyền được bảo lưu.</small>
+        </footer> 
+    </div> 
+     
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 
+    <script> 
+        // Form Validation Bootstrap
+        (function() { 
+            'use strict'; 
+            const forms = document.querySelectorAll('.needs-validation'); 
+            Array.from(forms).forEach(form => { 
+                form.addEventListener('submit', event => { 
+                    if (!form.checkValidity()) { 
+                        event.preventDefault(); 
+                        event.stopPropagation(); 
+                    } 
+                    form.classList.add('was-validated'); 
+                }, false); 
+            }); 
+        })(); 
+    </script> 
+</body> 
+ 
+</html>
