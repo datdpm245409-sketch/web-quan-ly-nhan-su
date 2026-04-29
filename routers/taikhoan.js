@@ -58,7 +58,7 @@ router.post('/sua/:id', async (req, res) => {
         HinhAnh: req.body.HinhAnh,
         TenDangNhap: req.body.TenDangNhap,
         QuyenHan: req.body.QuyenHan,
-        KichHoat: req.body.KichHoat
+        KichHoat: req.body.KichHoat,
 		LuongCoBan: req.body.LuongCoBan || 0
     };
     if (req.body.MatKhau) {
