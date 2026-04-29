@@ -58,9 +58,15 @@
                         <option value="Kinh doanh">Kinh doanh</option>
                         <option value="Kỹ thuật">Kỹ thuật</option>
                         <option value="Nhân sự">Nhân sự</option>
+						<option value="Nhân sự">Kế toán</option>
                     </select>
                 </div>
                 <div class="mb-3"><input type="text" name="ChucVu" class="form-control" placeholder="Chức vụ (VD: Trưởng phòng)"></div>
+				<% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
+        <div class="mb-3">
+            <input type="number" name="LuongCoBan" class="form-control" placeholder="Lương cơ bản (VD: 10000000)">
+        </div>
+    <% } %>
             </div>
             <div class="modal-footer"><button type="submit" class="btn btn-primary">Tạo nhân viên</button></div>
         </form>
@@ -125,11 +131,18 @@
                                 <option value="Kinh doanh" <%= nv.PhongBan === 'Kinh doanh' ? 'selected' : '' %>>Kinh doanh</option>
                                 <option value="Kỹ thuật" <%= nv.PhongBan === 'Kỹ thuật' ? 'selected' : '' %>>Kỹ thuật</option>
                                 <option value="Nhân sự" <%= nv.PhongBan === 'Nhân sự' ? 'selected' : '' %>>Nhân sự</option>
+								<option value="Kế toán" <%= nv.PhongBan === 'Nhân sự' ? 'selected' : '' %>>Kế toán</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Chức vụ</label>
                             <input type="text" name="ChucVu" class="form-control" value="<%= nv.ChucVu %>" required>
+							<% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Lương cơ bản</label>
+            <input type="number" name="LuongCoBan" class="form-control" value="<%= nv.LuongCoBan || 0 %>">
+        </div>
+    <% } %>
                         </div>
                     </div>
                     <div class="modal-footer">

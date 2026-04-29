@@ -11,6 +11,9 @@ const TaiKhoanSchema = new mongoose.Schema({
     PhongBan: { type: String, default: 'Chưa phân bổ' },
     ChucVu: { type: String, default: 'Nhân viên' },
     MucLuongCoBan: { type: Number, default: 5000000 }
+	
+	LuongCoBan: { type: Number, default: 0 },    
+    QuyenHan: { type: String, default: 'nhân viên' }
 });
  
 var taiKhoanModel = mongoose.model('TaiKhoan', TaiKhoanSchema); 

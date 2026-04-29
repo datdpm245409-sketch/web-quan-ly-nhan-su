@@ -24,12 +24,13 @@ router.get('/them', async (req, res) => {
 router.post('/them', async (req, res) => {
 	var salt = bcrypt.genSaltSync(10);
     var data = {
-        HoVaTen: req.body.HoVaTen,
-        Email: req.body.Email,
-        HinhAnh: req.body.HinhAnh,
-        TenDangNhap: req.body.TenDangNhap,
-        MatKhau: bcrypt.hashSync(req.body.MatKhau, salt)
-    };
+            HoVaTen: req.body.HoVaTen,
+            Email: req.body.Email,
+            HinhAnh: req.body.HinhAnh,
+            TenDangNhap: req.body.TenDangNhap,
+            MatKhau: bcrypt.hashSync(req.body.MatKhau, salt),
+            LuongCoBan: req.body.LuongCoBan || 0
+        };
     await TaiKhoan.create(data);
     res.redirect('/taikhoan');
 
@@ -58,6 +59,7 @@ router.post('/sua/:id', async (req, res) => {
         TenDangNhap: req.body.TenDangNhap,
         QuyenHan: req.body.QuyenHan,
         KichHoat: req.body.KichHoat
+		LuongCoBan: req.body.LuongCoBan || 0
     };
     if (req.body.MatKhau) {
         data['MatKhau'] = bcrypt.hashSync(req.body.MatKhau, salt);
