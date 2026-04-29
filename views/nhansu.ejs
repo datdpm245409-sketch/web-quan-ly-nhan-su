@@ -21,13 +21,14 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold text-dark mb-1">Danh sách nhân sự</h3>
-				<div class="d-flex gap-2">
-    <button class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalPhongBan">
-        <i class="bi bi-plus-circle"></i> Thêm phòng ban
-    </button>
-    <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalNhanVien">
-        <i class="bi bi-person-plus"></i> Thêm nhân viên
-    </button>
+				<% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
+        <button class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalPhongBan">
+            <i class="bi bi-plus-circle"></i> Thêm phòng ban
+        </button>
+        <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalNhanVien">
+            <i class="bi bi-person-plus"></i> Thêm nhân viên
+        </button>
+    <% } %>
 </div>
 
 <div class="modal fade" id="modalPhongBan" tabindex="-1">
@@ -101,11 +102,13 @@
                                     <td><%= nv.ChucVu || 'Nhân viên' %></td>
                                     <td>
 									<td class="text-end">
-    <button class="btn btn-sm btn-outline-warning rounded-circle me-2" 
-            data-bs-toggle="modal" 
-            data-bs-target="#editModal<%= nv._id %>">
-        <i class="bi bi-pencil-fill"></i>
-    </button>
+    <% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
+            <button class="btn btn-sm btn-outline-warning rounded-circle me-2" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#editModal<%= nv._id %>">
+                <i class="bi bi-pencil-fill"></i>
+            </button>
+        <% } %>
 
     <div class="modal fade" id="editModal<%= nv._id %>" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -143,8 +146,11 @@
                                         <a href="#" class="btn btn-sm btn-light text-primary rounded-circle" title="Xem chi tiết">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-light text-warning rounded-circle" title="Chỉnh sửa">
-                                            <i class="bi bi-pencil-square"></i>
+                                        <% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
+                <a href="#" class="btn btn-sm btn-light text-warning rounded-circle" title="Chỉnh sửa">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+            <% } %>
                                         </a>
                                     </td>
                                 </tr>
