@@ -134,22 +134,17 @@
 								<option value="Kế toán" <%= nv.PhongBan === 'Nhân sự' ? 'selected' : '' %>>Kế toán</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Chức vụ</label>
-							<% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
-        <div class="mb-3">
-            <label class="form-label fw-bold">Lương cơ bản (VNĐ/tháng)</label>
-            <input type="number" name="LuongCoBan" class="form-control" value="<%= nv.LuongCoBan || 0 %>">
-        </div>
-    <% } %>
-                            <input type="text" name="ChucVu" class="form-control" value="<%= nv.ChucVu %>" required>
-							<% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
-        <div class="mb-3">
-            <label class="form-label fw-bold">Lương cơ bản</label>
-            <input type="number" name="LuongCoBan" class="form-control" value="<%= nv.LuongCoBan || 0 %>">
-        </div>
-    <% } %>
-                        </div>
+                       <div class="mb-3">
+    <label class="form-label fw-bold">Chức vụ</label>
+    <input type="text" name="ChucVu" class="form-control" value="<%= nv.ChucVu %>" required>
+</div>
+
+<% if (typeof session !== 'undefined' && session.QuyenHan === 'admin') { %>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Lương cơ bản (VNĐ/tháng)</label>
+        <input type="number" name="LuongCoBan" class="form-control" value="<%= nv.LuongCoBan || 0 %>">
+    </div>
+<% } %>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning fw-bold">Lưu thay đổi</button>
